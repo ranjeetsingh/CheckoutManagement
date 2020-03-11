@@ -13,5 +13,6 @@ public class AppConstant {
 	public static final String PRODUCT_IS_OUT_OF_STOCK = "Prodcut is out of stock";
 	public static final String PLEASE_COMPLETE_BILLING_ADDRESS="Please complete billing address.";
 	public static final String CHECKOUT_PRODUCT_SUCCESSFULLY="Check Out product successfully";
-	
+	public static final String PAYMENT_IS_NOT_AVAILABLE="Payment mode is not available";
+	public static final String LIST_OF_PAYMENT_MODE="List of payment mode";
 }

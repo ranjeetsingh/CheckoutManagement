@@ -15,7 +15,7 @@ import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
 import com.checkout.management.model.response.userdetails.UserDetailsResponse;
 /**
- * All checkout related method in the controller
+ * All checkout related action method in the controller
  * @author RanjeetSi
  *
  */
