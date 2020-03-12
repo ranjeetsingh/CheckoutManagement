@@ -1,15 +1,25 @@
 package com.checkout.management.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.apputil.ConstantUrl;
 import com.checkout.management.iservice.ICheckoutService;
+import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.Address;
@@ -36,7 +46,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @return CartItemResponse
 	 */
 	@Override
-	@HystrixCommand(fallbackMethod = "getCartItemFallback")
+	//@HystrixCommand(fallbackMethod = "getCartItemFallback")
 	public CartItemResponse getCartItem(String userId) {
 		String userId1 = "20";
 		//CartItemResponse cartItemResponse = restTemplate.getForObject(ConstantUrl.getCartItemUrl + userId1,
@@ -86,28 +96,21 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 */
 	
 	@Override
-	@HystrixCommand(fallbackMethod = "getInventoryStatusFallback")
+	//@HystrixCommand(fallbackMethod = "getInventoryStatusFallback")
 	public InventoryResponse checkInventory(String productId) {
 		// check item in inventory
 		//String productId1 = "202";
 		//InventoryResponse inventoryResponse = restTemplate.getForObject(ConstantUrl.getInventoryUrl + productId1,
 		//		InventoryResponse.class);
 		String json = "{\r\n" + 
-				"    \"dataArray\": [\r\n" + 
-				"        {\r\n" + 
-				"            \"id\": 1,\r\n" + 
-				"            \"productID\": \"102\",\r\n" + 
-				"            \"quantity\": 2\r\n" + 
-				"        },\r\n" + 
-				"        {\r\n" + 
-				"            \"id\": 2,\r\n" + 
-				"            \"productID\": \"102\",\r\n" + 
-				"            \"quantity\": 2\r\n" + 
-				"        }\r\n" + 
-				"    ],\r\n" + 
-				"    \"message\": \"Success\",\r\n" + 
-				"    \"status\": true,\r\n" + 
-				"    \"statusCode\": 200\r\n" + 
+				"  \"data\": {\r\n" + 
+				"    \"id\": 9,\r\n" + 
+				"    \"productID\": \"109\",\r\n" + 
+				"    \"quantity\": 2\r\n" + 
+				"  },\r\n" + 
+				"  \"message\": \"success\",\r\n" + 
+				"  \"status\": true,\r\n" + 
+				"  \"statusCode\": 200\r\n" + 
 				"}";
 		InventoryResponse inventoryResponse = new Gson().fromJson(json, InventoryResponse.class);
 		return inventoryResponse;
@@ -120,7 +123,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 */
 	
 	@Override
-	@HystrixCommand(fallbackMethod = "getUserAddressFallback")
+	//@HystrixCommand(fallbackMethod = "getUserAddressFallback")
 	public UserDetailsResponse getUserAddress(String userId) {
 		// get user details
 		//String userId1 = "202";
@@ -193,7 +196,64 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		placeOrder.setCartitem(cartItemList);
 		return placeOrder;
 	}
+	
+	/**
+	 * This method use for call inventory api for update item quantity in inventory
+	 * 
+	 * @param commonRequestModel
+	 * @return CommonResponseModel
+	 */
+	@Override
+	public CommonResponseModel updatInventory(CommonRequestModel commonRequestModel) {
 
+		CommonResponseModel commonResponseModel = new CommonResponseModel();
+		/*
+		 * String url = ConstantUrl.updateInventory; Gson gson = new Gson(); String
+		 * requestBody = gson.toJson(commonRequestModel); HttpHeaders headers = new
+		 * HttpHeaders(); headers.setContentType(MediaType.APPLICATION_JSON);
+		 * HttpEntity<String> entity = new HttpEntity<String>(requestBody, headers);
+		 * ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT,
+		 * entity, String.class); String responseBody = response.getBody();
+		 * commonResponseModel = new
+		 * Gson().fromJson(responseBody,CommonResponseModel.class);
+		 */
+		commonResponseModel.setStatus(true);
+		commonResponseModel.setMessage(AppConstant.INVENTORY_UPDATE_SUCCESSFULLY);
+		commonResponseModel.setStatusCode(200);
+		return commonResponseModel;
+	}
+
+	/**
+	 * This method use for call cart remove item api for remove item from cart service
+	 * 
+	 * @param userId
+	 * @return CommonResponseModel
+	 */
+	@Override
+	public CommonResponseModel removeCartItem(String userId) {
+		
+		
+		//CommonResponseModel removeCartItemResponse = restTemplate.getForObject(ConstantUrl.getCartItemUrl + userId,CommonResponseModel.class);
+				
+		
+		String json = "{\r\n" + 
+				"  \"status\": true,\r\n" + 
+				"  \"message\": \" item remove from cart successfully\",\r\n" + 
+				"  \"statusCode\": 200,\r\n" + 
+				"  \"data\": null\r\n" + 
+				"}";
+		CommonResponseModel commonResponseModel = new Gson().fromJson(json, CommonResponseModel.class);
+		
+		
+		/*
+		 * CommonResponseModel commonResponseModel = new CommonResponseModel();
+		 * commonResponseModel.setStatus(true);
+		 * commonResponseModel.setMessage(AppConstant.REMOVE_ITEM_SUCCESSFULLY);
+		 * commonResponseModel.setStatusCode(200);
+		 */
+		return commonResponseModel;
+	}
+	
 	/**
 	 * Call the method when inventory micorservices down
 	 * @param userId
@@ -233,5 +293,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		userDetailsResponse.setMessage(AppConstant.USER_SERVICE_DOWN_MESSAGE);
 		return userDetailsResponse;
 	}
+
+	
 
 }

@@ -1,8 +1,7 @@
 
 package com.checkout.management.model.response.inventory;
 
-
-public class DataArray {
+public class Data {
 
     private Integer id;
     private String productID;

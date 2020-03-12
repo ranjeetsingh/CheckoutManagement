@@ -1,5 +1,7 @@
 package com.checkout.management.iservice;
 
+import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
@@ -46,9 +48,24 @@ public interface ICheckoutService {
 	 */
 	PlaceOderResponse placeOrder(CartItemResponse cartItemResponse, UserDetailsResponse userDetailsResponse);
 
+	/**
+	 * Method for use update item in inventory
+	 * 
+	 * @param commonRequestModel
+	 * @return CommonResponseModel
+	 */
+	CommonResponseModel updatInventory(CommonRequestModel commonRequestModel);
+
+	/**
+	 * Method for remove item from cart
+	 * 
+	 * @param userId
+	 * @return CommonResponseModel
+	 */
+	CommonResponseModel removeCartItem(String userId);
+
 	// void creatOrder(String userId, String itemObject);
-	// void removeCartItem(String userId);
-	// void updatInventory(String productId, String quantity);
+
 	// void creatShipment(String orderId, String userId);
 
 }

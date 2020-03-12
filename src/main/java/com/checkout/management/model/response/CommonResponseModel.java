@@ -1,20 +1,9 @@
+package com.checkout.management.model.response;
 
-package com.checkout.management.model.response.inventory;
-
-public class InventoryResponse {
-
-	private Data data;
+public class CommonResponseModel {
 	private String message;
 	private Boolean status;
-	private Integer statusCode;
-
-	public Data getData() {
-		return data;
-	}
-
-	public void setData(Data data) {
-		this.data = data;
-	}
+	private int statusCode;
 
 	public String getMessage() {
 		return message;
@@ -32,11 +21,11 @@ public class InventoryResponse {
 		this.status = status;
 	}
 
-	public Integer getStatusCode() {
+	public int getStatusCode() {
 		return statusCode;
 	}
 
-	public void setStatusCode(Integer statusCode) {
+	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
 	}
 

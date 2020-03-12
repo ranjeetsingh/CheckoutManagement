@@ -5,17 +5,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.iservice.ICheckoutService;
+import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.ResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
 import com.checkout.management.model.response.userdetails.UserDetailsResponse;
+
 /**
  * All checkout related action method in the controller
+ * 
  * @author RanjeetSi
  *
  */
@@ -26,6 +32,7 @@ public class CheckoutController {
 
 	/**
 	 * For checkout Product
+	 * 
 	 * @param productId
 	 * @param userId
 	 * @return ResponseEntity<Object>
@@ -56,7 +63,7 @@ public class CheckoutController {
 						new ResponseModel(true, inventoryStatus.getMessage(), null, 0), HttpStatus.OK);
 				return responseEntity;
 			}
-			if (inventoryStatus.getDataArray() == null && inventoryStatus.getDataArray().size() == 0) {
+			if (inventoryStatus.getData() == null) {
 				responseEntity = new ResponseEntity<Object>(
 						new ResponseModel(true, AppConstant.PRODUCT_IS_OUT_OF_STOCK, null, 0), HttpStatus.OK);
 				return responseEntity;
@@ -86,5 +93,55 @@ public class CheckoutController {
 
 		return responseEntity;
 	}
+
+	@PostMapping("/inventory/updateInventory/")
+	public ResponseEntity<Object> updateInventory(@RequestBody CommonRequestModel commonRequestModel) {
+		ResponseEntity<Object> responseEntity = null;
+		try {
+			CommonResponseModel inventoryResponseModel = checkOutProdcut.updatInventory(commonRequestModel);
+			if (inventoryResponseModel.getStatus() == false) {
+				responseEntity = new ResponseEntity<Object>(
+						new ResponseModel(true, inventoryResponseModel.getMessage(), null, 0), HttpStatus.OK);
+				return responseEntity;
+			}
+			responseEntity = new ResponseEntity<Object>(
+					new ResponseModel(true, inventoryResponseModel.getMessage(), null, 0), HttpStatus.OK);
+
+			return responseEntity;
+
+		} catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		return responseEntity;
+	}
+	
+	
+	@GetMapping("/cart/removeCartItem/{userId}")
+	public ResponseEntity<Object> removeCartItem(@PathVariable("userId") String userId) {
+		ResponseEntity<Object> responseEntity = null;
+		try {
+			CommonResponseModel cartItemResponseModel = checkOutProdcut.removeCartItem(userId);
+			if (cartItemResponseModel.getStatus() == false) {
+				responseEntity = new ResponseEntity<Object>(
+						new ResponseModel(true, cartItemResponseModel.getMessage(), null, 0), HttpStatus.OK);
+				return responseEntity;
+			}
+			responseEntity = new ResponseEntity<Object>(
+					new ResponseModel(true, cartItemResponseModel.getMessage(), null, 0), HttpStatus.OK);
+
+			return responseEntity;
+
+		} catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		return responseEntity;
+	}
+	
 
 }
