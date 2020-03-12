@@ -204,6 +204,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @return CommonResponseModel
 	 */
 	@Override
+	//@HystrixCommand(fallbackMethod = "updateInventoryFallback")
 	public CommonResponseModel updatInventory(CommonRequestModel commonRequestModel) {
 
 		CommonResponseModel commonResponseModel = new CommonResponseModel();
@@ -230,12 +231,9 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @return CommonResponseModel
 	 */
 	@Override
+	//@HystrixCommand(fallbackMethod = "removeCartItemFallback")
 	public CommonResponseModel removeCartItem(String userId) {
-		
-		
 		//CommonResponseModel removeCartItemResponse = restTemplate.getForObject(ConstantUrl.getCartItemUrl + userId,CommonResponseModel.class);
-				
-		
 		String json = "{\r\n" + 
 				"  \"status\": true,\r\n" + 
 				"  \"message\": \" item remove from cart successfully\",\r\n" + 
@@ -243,8 +241,6 @@ public class CheckoutServiceImpl implements ICheckoutService {
 				"  \"data\": null\r\n" + 
 				"}";
 		CommonResponseModel commonResponseModel = new Gson().fromJson(json, CommonResponseModel.class);
-		
-		
 		/*
 		 * CommonResponseModel commonResponseModel = new CommonResponseModel();
 		 * commonResponseModel.setStatus(true);
@@ -291,6 +287,32 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		System.out.println("User Service is down!!! fallback route enabled...");
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
 		userDetailsResponse.setMessage(AppConstant.USER_SERVICE_DOWN_MESSAGE);
+		return userDetailsResponse;
+	}
+
+	/**
+	 * Call the method when inventory micorservices down
+	 * @param userId
+	 * @return UserDetailsResponse
+	 */
+	@SuppressWarnings("unused")
+	private CommonResponseModel updateInventoryFallback(String userId) {
+		System.out.println("Inventory Service is down!!! fallback route enabled...");
+		CommonResponseModel updateInventory = new CommonResponseModel();
+		updateInventory.setMessage(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
+		return updateInventory;
+	}
+
+	/**
+	 * Call the method when cart service down
+	 * @param userId
+	 * @return UserDetailsResponse
+	 */
+	@SuppressWarnings("unused")
+	private CommonResponseModel removeCartItemFallback(String userId) {
+		System.out.println("Cart Service is down!!! fallback route enabled...");
+		CommonResponseModel userDetailsResponse = new CommonResponseModel();
+		userDetailsResponse.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
 		return userDetailsResponse;
 	}
 
