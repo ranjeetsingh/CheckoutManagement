@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.iservice.ICheckoutService;
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.cartorder.CartOrderRequest;
+import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
+import com.checkout.management.model.response.CreateOrder;
+import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.ResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
@@ -143,5 +147,30 @@ public class CheckoutController {
 		return responseEntity;
 	}
 	
+	@PostMapping("/order/createOrder")
+	public ResponseEntity<Object> createOrder(@RequestBody CartOrderRequest cartOrderRequest) {
+		ResponseEntity<Object> responseEntity = null;
+		try {
+			CreateOrderResponse createOrderResponse = checkOutProdcut.creatOrder(cartOrderRequest);
+			if (createOrderResponse.getStatus() == false) {
+				responseEntity = new ResponseEntity<Object>(
+						new ResponseModel(true, createOrderResponse.getMessage(), null, 0), HttpStatus.OK);
+				return responseEntity;
+			}
+			CreateOrder orderData = new CreateOrder();
+			orderData.setOrderId(createOrderResponse.getOrderId());
+
+			responseEntity = new ResponseEntity<Object>(
+					new ResponseModel(true, createOrderResponse.getMessage(), orderData, 0), HttpStatus.OK);
+
+			return responseEntity;
+		} catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		return responseEntity;
+	}
 
 }

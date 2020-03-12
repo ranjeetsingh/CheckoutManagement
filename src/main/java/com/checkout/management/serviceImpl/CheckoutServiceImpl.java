@@ -19,7 +19,10 @@ import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.apputil.ConstantUrl;
 import com.checkout.management.iservice.ICheckoutService;
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.cartorder.CartOrderRequest;
+import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
+import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.Address;
@@ -250,6 +253,31 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		return commonResponseModel;
 	}
 	
+	@Override
+	//@HystrixCommand(fallbackMethod = "creatOrderFallback")
+	public CreateOrderResponse creatOrder(CartOrderRequest cartOrderRequest) {
+		
+		/*
+		 * String url = ConstantUrl.createOrderUrl; Gson gson = new Gson(); String
+		 * requestBody = gson.toJson(cartOrderRequest); HttpHeaders headers = new
+		 * HttpHeaders(); headers.setContentType(MediaType.APPLICATION_JSON);
+		 * HttpEntity<String> entity = new HttpEntity<String>(requestBody, headers);
+		 * ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST,
+		 * entity, String.class); String responseBody = response.getBody();
+		 */
+		String responseBody = "{\r\n" + 
+				"  \"status\": true,\r\n" + 
+				"  \"message\": \"create order  successfully\",\r\n" + 
+				"  \"orderId\": \"32432432525\",\r\n" + 
+				"  \"errorCode\": 0\r\n" + 
+				"}";
+		
+		CreateOrderResponse createOrderResponse = new Gson().fromJson(responseBody, CreateOrderResponse.class);
+		
+		return createOrderResponse;
+		
+	}
+	
 	/**
 	 * Call the method when inventory micorservices down
 	 * @param userId
@@ -315,7 +343,18 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		userDetailsResponse.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
 		return userDetailsResponse;
 	}
-
 	
+	/**
+	 * Call the method when Order service down
+	 * @param userId
+	 * @return UserDetailsResponse
+	 */
+	@SuppressWarnings("unused")
+	private CreateOrderResponse creatOrderFallback(String userId) {
+		System.out.println("Order Service is down!!! fallback route enabled...");
+		CreateOrderResponse orderResp = new CreateOrderResponse();
+		orderResp.setMessage(AppConstant.ORDER_SERVICE_DOWN_MESSAGE);
+		return orderResp;
+	}
 
 }

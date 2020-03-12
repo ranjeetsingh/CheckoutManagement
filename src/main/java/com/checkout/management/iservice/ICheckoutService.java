@@ -1,7 +1,9 @@
 package com.checkout.management.iservice;
 
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.response.CommonResponseModel;
+import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
@@ -64,7 +66,11 @@ public interface ICheckoutService {
 	 */
 	CommonResponseModel removeCartItem(String userId);
 
-	// void creatOrder(String userId, String itemObject);
+	/**
+	 * Method for create order 
+	 * @param cartOrderRequest
+	 */
+	CreateOrderResponse creatOrder(CartOrderRequest cartOrderRequest);
 
 	// void creatShipment(String orderId, String userId);
 

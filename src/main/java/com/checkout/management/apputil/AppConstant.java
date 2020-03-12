@@ -17,4 +17,5 @@ public class AppConstant {
 	public static final String LIST_OF_PAYMENT_MODE="List of payment mode";
 	public static final String INVENTORY_UPDATE_SUCCESSFULLY="Inventory Updated successfully";
 	public static final String REMOVE_ITEM_SUCCESSFULLY= "Remove item  successfully";
+	public static final String ORDER_SERVICE_DOWN_MESSAGE = "Order service is down";
 }
