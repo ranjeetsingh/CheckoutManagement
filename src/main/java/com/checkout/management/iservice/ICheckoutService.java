@@ -3,9 +3,10 @@ package com.checkout.management.iservice;
 import com.checkout.management.model.request.CommonRequestModel;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.response.CommonResponseModel;
-import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
+import com.checkout.management.model.response.order.Createorder;
+import com.checkout.management.model.response.order.CreateOrderResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
 import com.checkout.management.model.response.userdetails.UserDetailsResponse;
 
@@ -69,8 +70,16 @@ public interface ICheckoutService {
 	/**
 	 * Method for create order 
 	 * @param cartOrderRequest
+	 * @return CreateOrderResponse
 	 */
 	CreateOrderResponse creatOrder(CartOrderRequest cartOrderRequest);
+	
+	/**
+	 * create object of order details
+	 * @param CreateOrderResponse
+	 * @return {@link Createorder}
+	 */
+	Createorder orderDetails(CreateOrderResponse createOrderResponse);
 
 	// void creatShipment(String orderId, String userId);
 

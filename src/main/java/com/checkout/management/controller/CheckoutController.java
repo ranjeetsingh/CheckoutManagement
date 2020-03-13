@@ -15,11 +15,11 @@ import com.checkout.management.model.request.CommonRequestModel;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
-import com.checkout.management.model.response.CreateOrder;
-import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.ResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
+import com.checkout.management.model.response.order.Createorder;
+import com.checkout.management.model.response.order.CreateOrderResponse;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
 import com.checkout.management.model.response.userdetails.UserDetailsResponse;
 
@@ -157,9 +157,7 @@ public class CheckoutController {
 						new ResponseModel(true, createOrderResponse.getMessage(), null, 0), HttpStatus.OK);
 				return responseEntity;
 			}
-			CreateOrder orderData = new CreateOrder();
-			orderData.setOrderId(createOrderResponse.getOrderId());
-
+			Createorder orderData = checkOutProdcut.orderDetails(createOrderResponse);
 			responseEntity = new ResponseEntity<Object>(
 					new ResponseModel(true, createOrderResponse.getMessage(), orderData, 0), HttpStatus.OK);
 

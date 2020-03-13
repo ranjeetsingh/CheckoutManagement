@@ -22,9 +22,10 @@ import com.checkout.management.model.request.CommonRequestModel;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
-import com.checkout.management.model.response.CreateOrderResponse;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.inventory.InventoryResponse;
+import com.checkout.management.model.response.order.Createorder;
+import com.checkout.management.model.response.order.CreateOrderResponse;
 import com.checkout.management.model.response.placeorder.Address;
 import com.checkout.management.model.response.placeorder.Cartitem;
 import com.checkout.management.model.response.placeorder.PlaceOderResponse;
@@ -268,7 +269,15 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		String responseBody = "{\r\n" + 
 				"  \"status\": true,\r\n" + 
 				"  \"message\": \"create order  successfully\",\r\n" + 
-				"  \"orderId\": \"32432432525\",\r\n" + 
+				"  \"createorder\": {\r\n" + 
+				"          \"userid\":\"15\",\r\n" + 
+				"          \"orderid\": \"232323\",\r\n" + 
+				"          \"currency\": \"INR\",\r\n" + 
+				"          \"amount\": \"200\",\r\n" + 
+				"         \"paymentmode\":\"NetBanking\",\r\n" + 
+				"         \"customername\": \"HCL\",\r\n" + 
+				"        \"shipingaddress\": \"lucknow\"\r\n" + 
+				"  },\r\n" + 
 				"  \"errorCode\": 0\r\n" + 
 				"}";
 		
@@ -355,6 +364,25 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		CreateOrderResponse orderResp = new CreateOrderResponse();
 		orderResp.setMessage(AppConstant.ORDER_SERVICE_DOWN_MESSAGE);
 		return orderResp;
+	}
+
+	/**
+	 * This method return the createOrder response
+	 * 
+	 * @param CreateOrderResponse
+	 * @return {@link Createorder}
+	 */
+	@Override
+	public Createorder orderDetails(CreateOrderResponse createOrderResponse) {
+		Createorder order = new Createorder();
+		order.setUserid(createOrderResponse.getCreateorder().getUserid());
+		order.setAmount(createOrderResponse.getCreateorder().getAmount());
+		order.setCurrency(createOrderResponse.getCreateorder().getCurrency());
+		order.setOrderid(createOrderResponse.getCreateorder().getOrderid());
+		order.setCustomername(createOrderResponse.getCreateorder().getCustomername());
+		order.setPaymentmode(createOrderResponse.getCreateorder().getPaymentmode());
+		order.setShipingaddress(createOrderResponse.getCreateorder().getShipingaddress());
+		return order;
 	}
 
 }
