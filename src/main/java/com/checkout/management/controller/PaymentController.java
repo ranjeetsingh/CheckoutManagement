@@ -4,12 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.iservice.IPaymentService;
+import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.cartorder.CartOrderRequest;
+import com.checkout.management.model.response.GatewayData;
+import com.checkout.management.model.response.PaymentGatewayResponse;
 import com.checkout.management.model.response.PaymentModeModel;
 import com.checkout.management.model.response.ResponseModel;
+import com.checkout.management.model.response.order.CreateOrderResponse;
+import com.checkout.management.model.response.order.Createorder;
 /**
  * All payment related action method 
  * @author RanjeetSi
@@ -19,7 +27,10 @@ import com.checkout.management.model.response.ResponseModel;
 public class PaymentController {
 	@Autowired
 	private IPaymentService iPaymentService;
-	
+	/**
+	 * This method use to fetch the payment mode
+	 * @return {@link ResponseEntity}
+	 */
 	@GetMapping("/getPaymentMethod")
 	public ResponseEntity<Object> PaymentMethod() {
 		ResponseEntity<Object> responseEntity = null;
@@ -31,6 +42,32 @@ public class PaymentController {
 		}
 		responseEntity = new ResponseEntity<Object>(
 				new ResponseModel(true, AppConstant.LIST_OF_PAYMENT_MODE, paymentModeModel, 0), HttpStatus.OK);
+
+		return responseEntity;
+	}
+	
+	@PostMapping("/payment")
+	public ResponseEntity<Object> payment(@RequestBody CartOrderRequest cartOrderRequest) {
+		ResponseEntity<Object> responseEntity = null;
+		try {
+			CreateOrderResponse createOrderResponse = iPaymentService.fetchOrderDetails(cartOrderRequest);
+
+			if (createOrderResponse.getStatus() == false) {
+				responseEntity = new ResponseEntity<Object>(
+						new ResponseModel(true, createOrderResponse.getMessage(), null, 0), HttpStatus.OK);
+				return responseEntity;
+			}
+			GatewayData gatewayResponse = iPaymentService.payment(createOrderResponse);
+			responseEntity = new ResponseEntity<Object>(
+					new ResponseModel(true, AppConstant.PAYMENT_SUCCESSFULL, gatewayResponse, 0), HttpStatus.OK);
+
+			return responseEntity;
+		} catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
 
 		return responseEntity;
 	}
