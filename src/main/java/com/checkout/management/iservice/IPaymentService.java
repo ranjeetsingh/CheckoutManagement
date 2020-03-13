@@ -1,5 +1,6 @@
 package com.checkout.management.iservice;
 
+import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.response.GatewayData;
 import com.checkout.management.model.response.PaymentGatewayResponse;
@@ -28,12 +29,28 @@ public interface IPaymentService {
 	 * @return {@link PaymentGatewayResponse}
 	 */
 	GatewayData payment(CreateOrderResponse orderResponse);
-	
-	
+
 	/**
-	 * Method for create order 
+	 * Method for create order
+	 * 
 	 * @param cartOrderRequest
 	 * @return CreateOrderResponse
 	 */
 	CreateOrderResponse fetchOrderDetails(CartOrderRequest cartOrderRequest);
+	
+	/**
+	 * Create shipment object after payment success
+	 * 
+	 * @param gatewayData
+	 * @return {@link ShipmentRequest}
+	 */
+	ShipmentRequest createShipmentObj(GatewayData gatewayData);
+	
+	/**
+	 * Initiate product shipment
+	 * @param shipmentRequest
+	 * @return 
+	 * 
+	 */
+	void initiateProductShipment(GatewayData gatewayData);
 }

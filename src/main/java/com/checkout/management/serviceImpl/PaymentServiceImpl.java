@@ -11,7 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.checkout.management.controller.CheckoutController;
 import com.checkout.management.iservice.IPaymentService;
+import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
+import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.GatewayData;
 import com.checkout.management.model.response.PaymentGatewayResponse;
 import com.checkout.management.model.response.PaymentModeModel;
@@ -74,6 +76,36 @@ public class PaymentServiceImpl implements IPaymentService {
 	public CreateOrderResponse fetchOrderDetails(CartOrderRequest cartOrderRequest) {
 		CreateOrderResponse orderResponse =checkoutServiceImpl.creatOrder(cartOrderRequest);
 		return orderResponse;
+	}
+
+	/**
+	 * create shipment object for ship the product
+	 * @param gatewayData
+	 * @return {@link ShipmentRequest}
+	 */
+	@Override
+	public ShipmentRequest createShipmentObj(GatewayData gatewayData) {
+		ShipmentRequest shipmentRequestObj = new ShipmentRequest();
+		shipmentRequestObj.setUserid(gatewayData.getUserid());
+		shipmentRequestObj.setOrderid(gatewayData.getOrderid());
+		shipmentRequestObj.setCurrency(gatewayData.getCurrency());
+		shipmentRequestObj.setAmount(gatewayData.getAmount());
+		shipmentRequestObj.setPaymentmode(gatewayData.getPaymentmode());
+		shipmentRequestObj.setCustomername(gatewayData.getCustomername());
+		shipmentRequestObj.setAddress(gatewayData.getAddress());
+		return shipmentRequestObj;
+	}
+
+	/**
+	 * Initiate product shipment after payment successfully
+	 * @param shipmentRequest
+	 */
+	@Override
+	public void initiateProductShipment(GatewayData gatewayData) {
+		ShipmentRequest createShipmentObj = createShipmentObj(gatewayData);
+		CommonResponseModel shipmentResponseModel = checkoutServiceImpl.creatShipment(createShipmentObj);
+		System.out.println(shipmentResponseModel.getMessage());
+		
 	}
 
 }

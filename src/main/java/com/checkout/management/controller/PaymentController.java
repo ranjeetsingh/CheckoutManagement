@@ -58,6 +58,9 @@ public class PaymentController {
 				return responseEntity;
 			}
 			GatewayData gatewayResponse = iPaymentService.payment(createOrderResponse);
+			//Initiate the shipment
+			iPaymentService.initiateProductShipment(gatewayResponse);
+			
 			responseEntity = new ResponseEntity<Object>(
 					new ResponseModel(true, AppConstant.PAYMENT_SUCCESSFULL, gatewayResponse, 0), HttpStatus.OK);
 
