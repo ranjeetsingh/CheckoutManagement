@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.iservice.ICheckoutService;
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
@@ -170,5 +171,30 @@ public class CheckoutController {
 		}
 		return responseEntity;
 	}
+	
+	@PostMapping("/cart/createshipment")
+	public ResponseEntity<Object> createShipment(@RequestBody ShipmentRequest shipmentRequest) {
+		ResponseEntity<Object> responseEntity = null;
+		try {
+			CommonResponseModel shipmentResponseModel = checkOutProdcut.creatShipment(shipmentRequest);
+			if (shipmentResponseModel.getStatus() == false) {
+				responseEntity = new ResponseEntity<Object>(
+						new ResponseModel(true, shipmentResponseModel.getMessage(), null, 0), HttpStatus.OK);
+				return responseEntity;
+			}
+			responseEntity = new ResponseEntity<Object>(
+					new ResponseModel(true, shipmentResponseModel.getMessage(), null, 0), HttpStatus.OK);
+
+			return responseEntity;
+
+		} catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		return responseEntity;
+	}
+	
 
 }

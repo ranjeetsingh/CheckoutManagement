@@ -11,4 +11,5 @@ public class ConstantUrl {
 	public static final String updateInventory = "http://10.110.244.130:7001/inventory/updateItem";
 	public static final String removeItemUrl = "http://localhost:8080/cart/removeCartItem/";
 	public static final String createOrderUrl = "http://localhost:8100/createOrder";
+	public static final String createShipmentUrl = "http://localhost:8100/createshipment";
 }

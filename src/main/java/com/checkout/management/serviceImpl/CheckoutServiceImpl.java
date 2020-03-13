@@ -19,6 +19,7 @@ import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.apputil.ConstantUrl;
 import com.checkout.management.iservice.ICheckoutService;
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
@@ -383,6 +384,34 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		order.setPaymentmode(createOrderResponse.getCreateorder().getPaymentmode());
 		order.setShipingaddress(createOrderResponse.getCreateorder().getShipingaddress());
 		return order;
+	}
+
+	/**
+	 * create shipment status after payment successfully.
+	 * @param ShipmentRequest
+	 * @return {@link CommonResponseModel}
+	 */
+	@Override
+	public CommonResponseModel creatShipment(ShipmentRequest shipmentRequest) {
+		
+		/*
+		 * String url = ConstantUrl.createShipmentUrl; Gson gson = new Gson(); String
+		 * requestBody = gson.toJson(shipmentRequest); HttpHeaders headers = new
+		 * HttpHeaders(); headers.setContentType(MediaType.APPLICATION_JSON);
+		 * HttpEntity<String> entity = new HttpEntity<String>(requestBody, headers);
+		 * ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST,
+		 * entity, String.class); String responseBody = response.getBody();
+		 */
+		 
+		String responseBody = "{\r\n" + 
+				"  \"status\": true,\r\n" + 
+				"  \"message\": \" Create shipment successfully\",\r\n" + 
+				"  \"statusCode\": 200,\r\n" + 
+				"  \"data\": null\r\n" + 
+				"}";
+		
+		CommonResponseModel shipmentResponse = new Gson().fromJson(responseBody, CommonResponseModel.class);
+		return shipmentResponse;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.checkout.management.iservice;
 
 import com.checkout.management.model.request.CommonRequestModel;
+import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
 import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.cartitem.CartItemResponse;
@@ -81,6 +82,11 @@ public interface ICheckoutService {
 	 */
 	Createorder orderDetails(CreateOrderResponse createOrderResponse);
 
-	// void creatShipment(String orderId, String userId);
+	/**
+	 * create shipment of product after payment successfull
+	 * @param shipmentRequest
+	 * @return {@link CommonResponseModel}
+	 */
+	CommonResponseModel creatShipment(ShipmentRequest shipmentRequest);
 
 }
