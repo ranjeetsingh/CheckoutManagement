@@ -53,4 +53,10 @@ public interface IPaymentService {
 	 * 
 	 */
 	void initiateProductShipment(GatewayData gatewayData);
+	
+	/**
+	 * Get payment info from payment gateway and save in DB
+	 * @param gatewayData
+	 */
+	void savePaymentInfo(GatewayData gatewayData);
 }

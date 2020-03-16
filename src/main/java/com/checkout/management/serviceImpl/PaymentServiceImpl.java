@@ -1,5 +1,7 @@
 package com.checkout.management.serviceImpl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.checkout.management.controller.CheckoutController;
+import com.checkout.management.entity.Payment;
 import com.checkout.management.iservice.IPaymentService;
 import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
@@ -19,6 +22,7 @@ import com.checkout.management.model.response.PaymentGatewayResponse;
 import com.checkout.management.model.response.PaymentModeModel;
 import com.checkout.management.model.response.order.CreateOrderResponse;
 import com.checkout.management.model.response.order.Createorder;
+import com.checkout.management.repository.PaymentRepository;
 import com.google.gson.Gson;
 
 /**
@@ -33,6 +37,8 @@ public class PaymentServiceImpl implements IPaymentService {
 	private RestTemplate restTemplate;
 	@Autowired
 	private CheckoutServiceImpl checkoutServiceImpl;
+	@Autowired
+	private PaymentRepository PaymentRepo;
 	/**
 	 * This method will return the list of payment mode
 	 * 
@@ -65,11 +71,13 @@ public class PaymentServiceImpl implements IPaymentService {
 		gatewayData.setPaymentStatus("Success");
 		gatewayData.setResponseCode(200);
 		gatewayData.setPaymentmode(orderResponse.getCreateorder().getPaymentmode());
+		savePaymentInfo(gatewayData);
 		return gatewayData;
 	}
 
 	/**
 	 * Fetch Order details
+	 * And create order using cart Microservices
 	 * @return {@link CreateOrderResponse}
 	 */
 	@Override
@@ -79,7 +87,8 @@ public class PaymentServiceImpl implements IPaymentService {
 	}
 
 	/**
-	 * create shipment object for ship the product
+	 * create shipment object for ship the product 
+	 * Using Shipment Microservices
 	 * @param gatewayData
 	 * @return {@link ShipmentRequest}
 	 */
@@ -106,6 +115,27 @@ public class PaymentServiceImpl implements IPaymentService {
 		CommonResponseModel shipmentResponseModel = checkoutServiceImpl.creatShipment(createShipmentObj);
 		System.out.println(shipmentResponseModel.getMessage());
 		
+	}
+
+	/**
+	 * save user payment information in database
+	 * @param gatewayData
+	 */
+	@Override
+	@Transactional
+	public void savePaymentInfo(GatewayData gatewayData) {
+		Payment paymentEntity = new Payment();
+		paymentEntity.setPaymenturl(gatewayData.getPaymenturl());
+		paymentEntity.setUserid(gatewayData.getUserid());
+		paymentEntity.setOrderid(gatewayData.getOrderid());
+		paymentEntity.setCurrency(gatewayData.getCurrency());
+		paymentEntity.setAmount(Double. valueOf(gatewayData.getAmount()));
+		paymentEntity.setPaymentmode(gatewayData.getPaymentmode());
+		paymentEntity.setCustomername(gatewayData.getCustomername());
+		paymentEntity.setAddress(gatewayData.getAddress());
+		paymentEntity.setPayment_status(gatewayData.getPaymentStatus());
+		paymentEntity.setResponse_code(gatewayData.getResponseCode());
+		PaymentRepo.save(paymentEntity);
 	}
 
 }
