@@ -39,6 +39,7 @@ public class PaymentServiceImpl implements IPaymentService {
 	private CheckoutServiceImpl checkoutServiceImpl;
 	@Autowired
 	private PaymentRepository PaymentRepo;
+
 	/**
 	 * This method will return the list of payment mode
 	 * 
@@ -78,18 +79,19 @@ public class PaymentServiceImpl implements IPaymentService {
 
 	/**
 	 * Create order and fetch order details using cart Microservices
+	 * 
 	 * @return {@link CreateOrderResponse}
 	 */
 	@Override
 	public CreateOrderResponse fetchOrderDetails(CartOrderRequest cartOrderRequest) {
 		System.out.println("Create order successfully");
-		CreateOrderResponse orderResponse =checkoutServiceImpl.creatOrder(cartOrderRequest);
+		CreateOrderResponse orderResponse = checkoutServiceImpl.creatOrder(cartOrderRequest);
 		return orderResponse;
 	}
 
 	/**
-	 * create shipment object for ship the product 
-	 * Using Shipment Microservices
+	 * create shipment object for ship the product Using Shipment Microservices
+	 * 
 	 * @param gatewayData
 	 * @return {@link ShipmentRequest}
 	 */
@@ -108,6 +110,7 @@ public class PaymentServiceImpl implements IPaymentService {
 
 	/**
 	 * Initiate product shipment after payment successfully
+	 * 
 	 * @param shipmentRequest
 	 */
 	@Override
@@ -116,11 +119,12 @@ public class PaymentServiceImpl implements IPaymentService {
 		ShipmentRequest createShipmentObj = createShipmentObj(gatewayData);
 		CommonResponseModel shipmentResponseModel = checkoutServiceImpl.creatShipment(createShipmentObj);
 		System.out.println(shipmentResponseModel.getMessage());
-		
+
 	}
 
 	/**
 	 * save user payment information in database
+	 * 
 	 * @param gatewayData
 	 */
 	@Override
@@ -132,7 +136,7 @@ public class PaymentServiceImpl implements IPaymentService {
 		paymentEntity.setUserid(gatewayData.getUserid());
 		paymentEntity.setOrderid(gatewayData.getOrderid());
 		paymentEntity.setCurrency(gatewayData.getCurrency());
-		paymentEntity.setAmount(Double. valueOf(gatewayData.getAmount()));
+		paymentEntity.setAmount(Double.valueOf(gatewayData.getAmount()));
 		paymentEntity.setPaymentmode(gatewayData.getPaymentmode());
 		paymentEntity.setCustomername(gatewayData.getCustomername());
 		paymentEntity.setAddress(gatewayData.getAddress());
@@ -142,15 +146,16 @@ public class PaymentServiceImpl implements IPaymentService {
 	}
 
 	/**
-	 * Remove item from cart on the basis of userId
-	 * this method use to call remove api from checkout controller
+	 * Remove item from cart on the basis of userId this method use to call remove
+	 * api from checkout controller
+	 * 
 	 * @param userId
 	 */
 	@Override
 	public void removeCartItem(String userId) {
 		CommonResponseModel cartItemResponseModel = checkoutServiceImpl.removeCartItem(userId);
 		System.out.println(cartItemResponseModel.getMessage());
-		
+
 	}
 
 }
