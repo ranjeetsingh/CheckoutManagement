@@ -1,5 +1,7 @@
 package com.checkout.management.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.checkout.management.apputil.AppConstant;
+import com.checkout.management.exception.ExceptionResponse;
 import com.checkout.management.iservice.IPaymentService;
 import com.checkout.management.model.request.CommonRequestModel;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
@@ -39,6 +42,7 @@ public class PaymentController {
 	@GetMapping("/getPaymentMethod")
 	public ResponseEntity<Object> PaymentMethod() {
 		ResponseEntity<Object> responseEntity = null;
+		try {
 		PaymentModeModel paymentModeModel = iPaymentService.getPaymentMode();
 		if (paymentModeModel == null) {
 			responseEntity = new ResponseEntity<Object>(
@@ -47,6 +51,13 @@ public class PaymentController {
 		}
 		responseEntity = new ResponseEntity<Object>(
 				new ResponseModel(true, AppConstant.LIST_OF_PAYMENT_MODE, paymentModeModel, 0), HttpStatus.OK);
+
+		return responseEntity;
+		}catch (Exception e) {
+
+			responseEntity = new ResponseEntity<Object>(new ResponseModel(false, e.getMessage(), null, 0),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 		return responseEntity;
 	}

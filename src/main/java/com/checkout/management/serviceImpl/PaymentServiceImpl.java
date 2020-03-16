@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.controller.CheckoutController;
 import com.checkout.management.entity.Payment;
+import com.checkout.management.exception.NotFoundException;
 import com.checkout.management.iservice.IPaymentService;
 import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
@@ -46,11 +47,15 @@ public class PaymentServiceImpl implements IPaymentService {
 	 * 
 	 * @return {@link PaymentModeModel}
 	 */
+	@SuppressWarnings({ "unused", "unused" })
 	@Override
 	public PaymentModeModel getPaymentMode() {
 		PaymentModeModel paymentModeModel = new PaymentModeModel();
 		paymentModeModel.setNetBanking(AppConstant.NETBANKING);
 		paymentModeModel.setCard(AppConstant.ATM_CARD_TYPE);
+		if (paymentModeModel == null) {
+			throw new NotFoundException(AppConstant.PAYMENT_MODE_LIST);
+		}
 		return paymentModeModel;
 	}
 
