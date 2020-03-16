@@ -59,4 +59,10 @@ public interface IPaymentService {
 	 * @param gatewayData
 	 */
 	void savePaymentInfo(GatewayData gatewayData);
+	/**
+	 * Remove item from cart on the basis of userId
+	 * this method use to call remove api from checkout controller
+	 * @param userId
+	 */
+	void removeCartItem(String userId);
 }

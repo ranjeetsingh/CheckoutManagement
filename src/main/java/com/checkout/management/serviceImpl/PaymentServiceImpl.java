@@ -60,6 +60,7 @@ public class PaymentServiceImpl implements IPaymentService {
 	 */
 	@Override
 	public GatewayData payment(CreateOrderResponse orderResponse) {
+		System.out.println("fetch gateway response successfully");
 		GatewayData gatewayData = new GatewayData();
 		gatewayData.setPaymenturl("https://beemaauction.com/newdemo/rest/api.php?paymentsuccess");
 		gatewayData.setUserid(orderResponse.getCreateorder().getUserid());
@@ -76,12 +77,12 @@ public class PaymentServiceImpl implements IPaymentService {
 	}
 
 	/**
-	 * Fetch Order details
-	 * And create order using cart Microservices
+	 * Create order and fetch order details using cart Microservices
 	 * @return {@link CreateOrderResponse}
 	 */
 	@Override
 	public CreateOrderResponse fetchOrderDetails(CartOrderRequest cartOrderRequest) {
+		System.out.println("Create order successfully");
 		CreateOrderResponse orderResponse =checkoutServiceImpl.creatOrder(cartOrderRequest);
 		return orderResponse;
 	}
@@ -111,6 +112,7 @@ public class PaymentServiceImpl implements IPaymentService {
 	 */
 	@Override
 	public void initiateProductShipment(GatewayData gatewayData) {
+		System.out.println("Create shipment Successfully");
 		ShipmentRequest createShipmentObj = createShipmentObj(gatewayData);
 		CommonResponseModel shipmentResponseModel = checkoutServiceImpl.creatShipment(createShipmentObj);
 		System.out.println(shipmentResponseModel.getMessage());
@@ -124,6 +126,7 @@ public class PaymentServiceImpl implements IPaymentService {
 	@Override
 	@Transactional
 	public void savePaymentInfo(GatewayData gatewayData) {
+		System.out.println("Save payment Info in DB");
 		Payment paymentEntity = new Payment();
 		paymentEntity.setPaymenturl(gatewayData.getPaymenturl());
 		paymentEntity.setUserid(gatewayData.getUserid());
@@ -136,6 +139,18 @@ public class PaymentServiceImpl implements IPaymentService {
 		paymentEntity.setPayment_status(gatewayData.getPaymentStatus());
 		paymentEntity.setResponse_code(gatewayData.getResponseCode());
 		PaymentRepo.save(paymentEntity);
+	}
+
+	/**
+	 * Remove item from cart on the basis of userId
+	 * this method use to call remove api from checkout controller
+	 * @param userId
+	 */
+	@Override
+	public void removeCartItem(String userId) {
+		CommonResponseModel cartItemResponseModel = checkoutServiceImpl.removeCartItem(userId);
+		System.out.println(cartItemResponseModel.getMessage());
+		
 	}
 
 }
