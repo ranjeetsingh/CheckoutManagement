@@ -19,4 +19,7 @@ public class AppConstant {
 	public static final String REMOVE_ITEM_SUCCESSFULLY= "Remove item  successfully";
 	public static final String ORDER_SERVICE_DOWN_MESSAGE = "Order service is down";
 	public static final String PAYMENT_SUCCESSFULL = "You payment is successfully";
+	public static final String NETBANKING= "NetBanking";
+	public static final String ATM_CARD_TYPE= "Credit/Debit/ATM card";
+	public static final String SUCCESS = "Success";
 }

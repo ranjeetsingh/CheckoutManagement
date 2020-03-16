@@ -40,7 +40,7 @@ public class CheckoutController {
 	 * 
 	 * @param productId
 	 * @param userId
-	 * @return ResponseEntity<Object>
+	 * @return {@link ResponseEntity}
 	 */
 	@SuppressWarnings("unused")
 	@GetMapping("/checkoutProduct/{productId}/{userId}")
@@ -99,6 +99,11 @@ public class CheckoutController {
 		return responseEntity;
 	}
 
+	/**
+	 * For update inventory using this api
+	 * @param commonRequestModel
+	 * @return {@link ResponseEntity}
+	 */
 	@PostMapping("/inventory/updateInventory/")
 	public ResponseEntity<Object> updateInventory(@RequestBody CommonRequestModel commonRequestModel) {
 		ResponseEntity<Object> responseEntity = null;
@@ -123,7 +128,11 @@ public class CheckoutController {
 		return responseEntity;
 	}
 	
-	
+	/**
+	 * For remove item from cart using this api
+	 * @param userId
+	 * @return {@link ResponseEntity}
+	 */
 	@GetMapping("/cart/removeCartItem/{userId}")
 	public ResponseEntity<Object> removeCartItem(@PathVariable("userId") String userId) {
 		ResponseEntity<Object> responseEntity = null;
@@ -147,7 +156,11 @@ public class CheckoutController {
 		}
 		return responseEntity;
 	}
-	
+	/**
+	 * For create order of item using this api.
+	 * @param cartOrderRequest
+	 * @return {@link ResponseEntity}
+	 */
 	@PostMapping("/order/createOrder")
 	public ResponseEntity<Object> createOrder(@RequestBody CartOrderRequest cartOrderRequest) {
 		ResponseEntity<Object> responseEntity = null;
@@ -171,7 +184,11 @@ public class CheckoutController {
 		}
 		return responseEntity;
 	}
-	
+	/**
+	 * For create shipment using this api
+	 * @param shipmentRequest
+	 * @return
+	 */
 	@PostMapping("/cart/createshipment")
 	public ResponseEntity<Object> createShipment(@RequestBody ShipmentRequest shipmentRequest) {
 		ResponseEntity<Object> responseEntity = null;

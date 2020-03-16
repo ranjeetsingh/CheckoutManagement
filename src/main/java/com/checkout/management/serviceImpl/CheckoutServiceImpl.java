@@ -58,33 +58,37 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		//		CartItemResponse.class);
 		String json = "{\r\n" + 
 				"  \"status\": true,\r\n" + 
-				"  \"message\": \"checkout Item successfully\",\r\n" + 
+				"  \"message\": \"get payment method successfully\",\r\n" + 
 				"  \"code\": 200,\r\n" + 
 				"  \"data\": {\r\n" + 
 				"    \"cartitem\": [\r\n" + 
 				"      {\r\n" + 
-				"        \"productid\": \"1\",\r\n" + 
+				"        \"productid\": \"101\",\r\n" + 
 				"        \"productname\": \"mobile\",\r\n" + 
-				"        \"price\": \"201\",\r\n" + 
+				"        \"price\": \"200\",\r\n" + 
+				"		\"quantity\" :4,\r\n" + 
 				"        \"description\": \"Blcak color mobile with 4 GB\"\r\n" + 
 				"      },\r\n" + 
 				"      {\r\n" + 
-				"        \"productid\": \"2\",\r\n" + 
-				"        \"productname\": \"mobile\",\r\n" + 
-				"        \"price\": \"202\",\r\n" + 
-				"        \"description\": \"Blcak color mobile with 4 GB\"\r\n" + 
+				"        \"productid\": \"102\",\r\n" + 
+				"        \"productname\": \"HP laptop\",\r\n" + 
+				"        \"price\": \"40000\",\r\n" + 
+				"		\"quantity\" :1,\r\n" + 
+				"        \"description\": \"Blcak color HP Laptop with 8 GB\"\r\n" + 
 				"      },\r\n" + 
 				"      {\r\n" + 
-				"        \"productid\": \"3\",\r\n" + 
-				"        \"productname\": \"mobile\",\r\n" + 
-				"        \"price\": \"203\",\r\n" + 
-				"        \"description\": \"Blcak color mobile with 4 GB\"\r\n" + 
+				"        \"productid\": \"103\",\r\n" + 
+				"        \"productname\": \"Data card\",\r\n" + 
+				"        \"price\": \"2500\",\r\n" + 
+				"		\"quantity\" :1,\r\n" + 
+				"        \"description\": \"Airtel Data card\"\r\n" + 
 				"      },\r\n" + 
 				"      {\r\n" + 
-				"        \"productid\": \"4\",\r\n" + 
-				"        \"productname\": \"mobile\",\r\n" + 
-				"        \"price\": \"204\",\r\n" + 
-				"        \"description\": \"Blcak color mobile with 4 GB\"\r\n" + 
+				"        \"productid\": \"104\",\r\n" + 
+				"        \"productname\": \"Dell Laptop\",\r\n" + 
+				"        \"price\": \"45000\",\r\n" + 
+				"		\"quantity\" :1,\r\n" + 
+				"        \"description\": \"Silver color laptop with 8 GB\"\r\n" + 
 				"      }\r\n" + 
 				"    ]\r\n" + 
 				"  }\r\n" + 
@@ -192,12 +196,20 @@ public class CheckoutServiceImpl implements ICheckoutService {
 		placeOrder.setAddress(address);
 		//set item in list
 		List<Cartitem> cartItemList = new ArrayList<>();
-		Cartitem cartItemObj = new Cartitem();
-		cartItemObj.setProductname(cartItemResponse.getData().getCartitem().get(0).getProductname());
-		cartItemObj.setDescription(cartItemResponse.getData().getCartitem().get(0).getDescription());
-		cartItemObj.setProductid(cartItemResponse.getData().getCartitem().get(0).getProductid());
-		cartItemObj.setPrice(cartItemResponse.getData().getCartitem().get(0).getPrice());
-		cartItemList.add(cartItemObj);
+		for (Cartitem cartitem : cartItemResponse.getData().getCartitem()) {
+			cartItemList.add(cartitem);
+		}
+		/*
+		 * Cartitem cartItemObj = new Cartitem();
+		 * cartItemObj.setProductname(cartItemResponse.getData().getCartitem().get(0).
+		 * getProductname());
+		 * cartItemObj.setDescription(cartItemResponse.getData().getCartitem().get(0).
+		 * getDescription());
+		 * cartItemObj.setProductid(cartItemResponse.getData().getCartitem().get(0).
+		 * getProductid());
+		 * cartItemObj.setPrice(cartItemResponse.getData().getCartitem().get(0).getPrice
+		 * ()); cartItemList.add(cartItemObj);
+		 */
 		placeOrder.setCartitem(cartItemList);
 		return placeOrder;
 	}

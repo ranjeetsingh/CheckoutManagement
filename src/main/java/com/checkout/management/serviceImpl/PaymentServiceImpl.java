@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.controller.CheckoutController;
 import com.checkout.management.entity.Payment;
 import com.checkout.management.iservice.IPaymentService;
@@ -48,8 +49,8 @@ public class PaymentServiceImpl implements IPaymentService {
 	@Override
 	public PaymentModeModel getPaymentMode() {
 		PaymentModeModel paymentModeModel = new PaymentModeModel();
-		paymentModeModel.setNetBanking("NetBanking");
-		paymentModeModel.setCard("credit/debit/ATM card");
+		paymentModeModel.setNetBanking(AppConstant.NETBANKING);
+		paymentModeModel.setCard(AppConstant.ATM_CARD_TYPE);
 		return paymentModeModel;
 	}
 
@@ -70,7 +71,7 @@ public class PaymentServiceImpl implements IPaymentService {
 		gatewayData.setAmount(orderResponse.getCreateorder().getAmount());
 		gatewayData.setCustomername(orderResponse.getCreateorder().getCustomername());
 		gatewayData.setAddress(orderResponse.getCreateorder().getShipingaddress());
-		gatewayData.setPaymentStatus("Success");
+		gatewayData.setPaymentStatus(AppConstant.SUCCESS);
 		gatewayData.setResponseCode(200);
 		gatewayData.setPaymentmode(orderResponse.getCreateorder().getPaymentmode());
 		savePaymentInfo(gatewayData);
