@@ -94,6 +94,20 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 		when(mockCheckoutServiceImpl.getUserAddress("1")).thenReturn(userDetailsResponse);
 		Assert.assertEquals("User Adderess details", userDetailsResponse.getMessage());
 	}
+	
+	@Test
+	public void test_UserDetailsResponse_When_Fail() {
+		UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+		userDetailsResponse.setMessage("Some thing wrong");
+		userDetailsResponse.setStatus(200);
+		List<Result> resultList = new ArrayList<>();
+		Result resultObj = null;
+		resultList.add(resultObj);
+		userDetailsResponse.setResult(resultList);
+		when(mockCheckoutServiceImpl.getUserAddress("1")).thenReturn(userDetailsResponse);
+		Assert.assertEquals("Some thing wrong", userDetailsResponse.getMessage());
+	}
+	
 
 	@Test
 	public void test_placeOrder_When_Success() {
@@ -124,6 +138,37 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 		when(mockCheckoutServiceImpl.placeOrder(cartItemResponse, userDetailsResponse)).thenReturn(placeOrder);
 		Assert.assertEquals("Mobile", placeOrder.getCartitem().get(0).getProductname());
 	}
+	
+	@Test
+	public void test_placeOrder_When_Fail() {
+		PlaceOderResponse placeOrder = new PlaceOderResponse();
+
+		CartItemResponse cartItemResponse = new CartItemResponse();
+		cartItemResponse.setMessage("Place order successfully");
+		cartItemResponse.setCode(200);
+		cartItemResponse.setStatus(true);
+
+		UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+		userDetailsResponse.setMessage("User Adderess details");
+		userDetailsResponse.setStatus(200);
+
+		// set address
+		Address address = new Address();
+		address.setFirstName("Ranjeet");
+		address.setLastName("Singh");
+
+		List<Cartitem> cartItemList = new ArrayList<>();
+		Cartitem cartItemObj = new Cartitem();
+		cartItemObj.setProductname(null);
+		cartItemObj.setProductid("101");
+		cartItemObj.setPrice("200");
+		cartItemList.add(cartItemObj);
+		placeOrder.setCartitem(cartItemList);
+		placeOrder.setAddress(address);
+		when(mockCheckoutServiceImpl.placeOrder(cartItemResponse, userDetailsResponse)).thenReturn(placeOrder);
+		Assert.assertEquals(null, placeOrder.getCartitem().get(0).getProductname());
+	}
+	
 
 	@Test
 	public void test_updatInventory_When_Success() {
@@ -231,7 +276,7 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 	public void test_creatShipment_When_Fail() {
 		ShipmentRequest shipmentRequest = createShipmentTestSuccessObj();
 		CommonResponseModel shipmentResponse = new CommonResponseModel();
-		shipmentResponse.setMessage("Success");
+		shipmentResponse.setMessage("fail");
 		shipmentResponse.setStatus(false);
 		shipmentResponse.setStatusCode(200);
 		when(mockCheckoutServiceImpl.creatShipment(shipmentRequest)).thenReturn(shipmentResponse);
