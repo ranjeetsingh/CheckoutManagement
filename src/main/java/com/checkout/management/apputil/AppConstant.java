@@ -23,4 +23,9 @@ public class AppConstant {
 	public static final String ATM_CARD_TYPE= "Credit/Debit/ATM card";
 	public static final String SUCCESS = "Success";
 	public static final String PAYMENT_MODE_LIST="Payment mode list is not available.";
+	public static final String FAIL = "fail";
+	public static final String  CREAT_ODER_SUCCESS= "create order  successfully";
+	public static final String  CREAT_ODER_FAIL= "Order is not create.Something is wrong please check it.";
+	public static final String CREAT_SHIPMENT_SUCCESS = "Create Shipment successfull";
+	public static final String CREAT_SHIPMENT_FAIL = "Create Shipment fail";
 }

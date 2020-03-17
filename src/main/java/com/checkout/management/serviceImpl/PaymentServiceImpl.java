@@ -53,9 +53,10 @@ public class PaymentServiceImpl implements IPaymentService {
 		PaymentModeModel paymentModeModel = new PaymentModeModel();
 		paymentModeModel.setNetBanking(AppConstant.NETBANKING);
 		paymentModeModel.setCard(AppConstant.ATM_CARD_TYPE);
-		if (paymentModeModel == null) {
-			throw new NotFoundException(AppConstant.PAYMENT_MODE_LIST);
-		}
+		/*
+		 * if (paymentModeModel == null) { throw new
+		 * NotFoundException(AppConstant.PAYMENT_MODE_LIST); }
+		 */
 		return paymentModeModel;
 	}
 
