@@ -80,8 +80,7 @@ public class PaymentController {
 			// remove user item from Cart in cart micro services
 			String userId = (String) cartOrderRequest.getData().getAddress().getId();
 			iPaymentService.removeCartItem(userId);
-
-			if (createOrderResponse.getStatus() == false) {
+			if (!createOrderResponse.getStatus()) {
 				responseEntity = new ResponseEntity<Object>(
 						new ResponseModel(true, createOrderResponse.getMessage(), null, 0), HttpStatus.OK);
 				return responseEntity;

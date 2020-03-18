@@ -13,10 +13,13 @@ import com.checkout.management.model.request.cartorder.Data;
 import com.checkout.management.model.response.CommonResponseModel;
 import com.checkout.management.model.response.GatewayData;
 import com.checkout.management.model.response.PaymentModeModel;
+import com.checkout.management.model.response.cartitem.CartItemResponse;
 import com.checkout.management.model.response.order.CreateOrderResponse;
 import com.checkout.management.model.response.order.Createorder;
+import com.checkout.management.model.response.placeorder.PlaceOderResponse;
+import com.checkout.management.model.response.userdetails.UserDetailsResponse;
 
-public class JUnitObjectPaymentServiceImpl {
+public class JUnitObjectPaymentServiceImpl extends JUnitObjectCheckoutControllerObj {
 
 	/**
 	 * return payment mode model
@@ -220,4 +223,14 @@ public class JUnitObjectPaymentServiceImpl {
 		return cartOrderRequest;
 
 	}
+	
+	public CartItemResponse cartItemResponse(){
+		CartItemResponse cartItemResponse = new CartItemResponse();
+		cartItemResponse.setMessage("Place order successfully");
+		cartItemResponse.setCode(200);
+		cartItemResponse.setStatus(true);
+		return cartItemResponse;
+	}
+	
+	
 }

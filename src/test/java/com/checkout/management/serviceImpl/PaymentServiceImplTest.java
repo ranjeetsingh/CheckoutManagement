@@ -31,7 +31,7 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl {
 	private PaymentRepository mockPaymentRepository;
 	@MockBean
 	private PaymentServiceImpl mockPaymentServiceImpl;
-	@MockBean 
+	@Mock 
 	private CheckoutServiceImpl mockCheckoutServiceImpl;
 	/**
 	 * Test case success when get all payment mode

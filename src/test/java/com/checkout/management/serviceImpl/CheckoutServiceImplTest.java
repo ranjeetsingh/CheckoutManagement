@@ -284,5 +284,6 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 
 	}
 	
+	
 
 }
