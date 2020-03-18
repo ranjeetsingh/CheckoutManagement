@@ -1,6 +1,7 @@
 package com.checkout.management.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.checkout.management.apputil.AppConstant;
 import com.checkout.management.model.request.CommonRequestModel;
 import com.checkout.management.model.request.ShipmentRequest;
 import com.checkout.management.model.request.cartorder.CartOrderRequest;
@@ -44,17 +46,21 @@ class CheckoutControllerTest extends JUnitObjectPaymentServiceImpl {
 		PlaceOderResponse placeOrder = placeOrderData();
 
 		when(mockCheckoutServiceImpl.getCartItem("1")).thenReturn(cartItemResponse);
-		// when(cartItemResponse.getMessage()).thenReturn(AppConstant.CART_SERVICE_DOWN_MESSAGE);
+		//when(cartItemResponse.getMessage()).thenReturn(AppConstant.CART_SERVICE_DOWN_MESSAGE);
+		//assertEquals(cartItemResponse.getMessage(), AppConstant.CART_SERVICE_DOWN_MESSAGE);
 		// when(cartItemResponse.getData()).thenReturn(null);
+		assertEquals(cartItemResponse.getData(), null);
 
 		InventoryResponse inventoryStatus = inventoryStatus();
 		when(mockCheckoutServiceImpl.checkInventory("1")).thenReturn(inventoryStatus);
 		// when(inventoryStatus.getMessage()).thenReturn(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
 		// when(inventoryStatus.getData()).thenReturn(null);
+		assertEquals(inventoryStatus.getData(), null);
 
 		UserDetailsResponse userDetailsResponse = userDetailsResponse();
 		when(mockCheckoutServiceImpl.getUserAddress("1")).thenReturn(userDetailsResponse);
 		// when(userDetailsResponse.getResult()).thenReturn(null);
+		assertEquals(userDetailsResponse.getResult().size(), 1);
 
 		when(mockCheckoutServiceImpl.placeOrder(cartItemResponse, userDetailsResponse)).thenReturn(placeOrder);
 		ResponseEntity<Object> responseEntity = mockCheckoutController.checkoutProduct("1", "1");
@@ -121,4 +127,20 @@ class CheckoutControllerTest extends JUnitObjectPaymentServiceImpl {
 		assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
 	}
 
+	/**
+	 * Test case success when update create order return success response expected
+	 * result 200
+	 */
+	@Test
+	public void test_createShipment_When_Fail() {
+		ShipmentRequest shipmentRequest = createShipmentTestSuccessObj();
+		CommonResponseModel shipmentResponseModel = commonResponseModelObjForFail();
+
+		when(mockCheckoutServiceImpl.creatShipment(shipmentRequest)).thenReturn(shipmentResponseModel);
+		//assertEquals(shipmentResponseModel.getStatus(), false);
+		ResponseEntity<Object> responseEntity = mockCheckoutController.createShipment(shipmentRequest);
+		assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+	}
+
+	
 }
