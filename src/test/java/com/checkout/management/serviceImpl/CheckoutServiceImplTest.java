@@ -63,7 +63,7 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 		inventoryResponse.setStatus(true);
 		inventoryResponse.setStatusCode(200);
 		when(mockCheckoutServiceImpl.checkInventory("1")).thenReturn(inventoryResponse);
-		Assert.assertEquals(true, inventoryResponse.getStatus());
+		assertEquals(true, inventoryResponse.getStatus());
 	}
 	
 	@Test
