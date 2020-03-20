@@ -1,4 +1,12 @@
 package com.checkout.management.apputil;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+
 /**
  * Define App constant 
  * @author RanjeetSi
@@ -28,4 +36,15 @@ public class AppConstant {
 	public static final String  CREAT_ODER_FAIL= "Order is not create.Something is wrong please check it.";
 	public static final String CREAT_SHIPMENT_SUCCESS = "Create Shipment successfull";
 	public static final String CREAT_SHIPMENT_FAIL = "Create Shipment fail";
+	public static final Contact DEFAULT_CONTACT = new Contact(
+			"Ranjeet Singh", 
+			"http://www.hcl.com",
+			"ranjeetsi@hcl.com");
+	
+	public static final ApiInfo DEFAULT_API_INFO = new ApiInfo("Checkout API",
+			"OnLine Ecommarce API.", "1.0", "urn:tos", DEFAULT_CONTACT, "online Ecommarce 1.0",
+			"http://www.hcl.com");
+
+	public static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<String>(
+			Arrays.asList("application/json"));  
 }
