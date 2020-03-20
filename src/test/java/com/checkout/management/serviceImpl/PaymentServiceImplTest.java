@@ -30,14 +30,13 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 	private PaymentRepository mockPaymentRepository;
 	@Autowired
 	private PaymentServiceImpl mockPaymentServiceImpl;
-	@Mock 
+	@Autowired 
 	private CheckoutServiceImpl mockCheckoutServiceImpl;
 	@Test
 	void testGetPaymentMode() {
 		PaymentModeModel paymentModeModel = new PaymentModeModel();
 		paymentModeModel.setNetBanking(AppConstant.NETBANKING);
 		paymentModeModel.setCard(AppConstant.ATM_CARD_TYPE);
-		//when(mockPaymentServiceImpl.getPaymentMode()).thenReturn(paymentModeModel);
 		PaymentModeModel paymentModeModel1 = mockPaymentServiceImpl.getPaymentMode();
 		Assert.assertEquals(AppConstant.NETBANKING, paymentModeModel1.getNetBanking());
 	}
@@ -51,9 +50,6 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 		CreateOrderResponse creatOrderResponse = fetchOrderDetailsSuccessObj();
 		Payment paymentEntity = paymentEntityObj();
 		when(mockPaymentRepository.save(Mockito.any())).thenReturn(paymentEntity);
-		//GatewayData gatewayData = mockPaymentServiceImpl.payment(creatOrderResponse);
-		//GatewayData gatewayData = paymentSuccessObj();
-		//when(mockPaymentServiceImpl.payment(creatOrderResponse)).thenReturn(gatewayData);
 		GatewayData gatewayData = mockPaymentServiceImpl.payment(creatOrderResponse);
 		Assert.assertEquals(AppConstant.SUCCESS, gatewayData.getPaymentStatus());
 		
@@ -65,9 +61,6 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 	@Test
 	public void test_fetchOrderDetails_When_Success() {
 		CartOrderRequest cartOrderRequest = cartOrderRequest();
-		//CreateOrderResponse orderResponse = mockPaymentServiceImpl.fetchOrderDetails(cartOrderRequest);
-		//CreateOrderResponse orderResponse = fetchOrderDetailsSuccessObj();
-		//when(mockPaymentServiceImpl.fetchOrderDetails(cartOrderRequest)).thenReturn(orderResponse);
 		CreateOrderResponse orderResponse = mockPaymentServiceImpl.fetchOrderDetails(cartOrderRequest);
 		Assert.assertEquals(AppConstant.CREAT_ODER_SUCCESS, orderResponse.getMessage());
 		
@@ -81,9 +74,6 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 	@Test
 	public void test_createShipmentObj_When_Success() {
 		GatewayData gatewayData = paymentSuccessObj();
-		//ShipmentRequest createShipmentObj = mockPaymentServiceImpl.createShipmentObj(gatewayData);
-		//ShipmentRequest createShipmentObj =  createShipmentTestSuccessObj();
-		//when(mockPaymentServiceImpl.createShipmentObj(gatewayData)).thenReturn(createShipmentObj);
 		ShipmentRequest createShipmentObj = mockPaymentServiceImpl.createShipmentObj(gatewayData);
 		Assert.assertEquals("1", createShipmentObj.getUserid());
 		
@@ -100,10 +90,7 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 		GatewayData gatewayData = paymentSuccessObj();
 		mockPaymentServiceImpl.initiateProductShipment(gatewayData);
 		ShipmentRequest createShipmentObj = createShipmentTestSuccessObj();
-		//CommonResponseModel shipmentResponseModel = mockCheckoutServiceImpl.creatShipment(createShipmentObj);
-		CommonResponseModel shipmentResponseModel = commonResponseModelObjForSuccess();
-		when(mockCheckoutServiceImpl.creatShipment(createShipmentObj)).thenReturn(shipmentResponseModel);
-		//CommonResponseModel shipmentResponseModel = mockCheckoutServiceImpl.creatShipment(createShipmentObj);
+		CommonResponseModel shipmentResponseModel = mockCheckoutServiceImpl.creatShipment(createShipmentObj);
 		Assert.assertEquals(true, shipmentResponseModel.getStatus());
 		
 	}
@@ -116,12 +103,10 @@ class PaymentServiceImplTest extends JUnitObjectPaymentServiceImpl{
 	 * Test case success when initiate shipment  successfully
 	 */
 	@Test
-	public void test_removeCartItem_When_Success() {
-		//CommonResponseModel commaonResponseModel = mockCheckoutServiceImpl.removeCartItem("1");
-		CommonResponseModel commonResponseModel = commonResponseModelObjForSuccess();
-		when(mockCheckoutServiceImpl.removeCartItem("1")).thenReturn(commonResponseModel);
-		//CommonResponseModel commonResponseModel = mockCheckoutServiceImpl.removeCartItem("1");
-		Assert.assertEquals(true, commonResponseModel.getStatus());
+	public void testRemoveCartItem() {
+		CommonResponseModel cartItemResponseModel = commonResponseModelObjForSuccess();
+		mockPaymentServiceImpl.removeCartItem("1");
+		Assert.assertEquals(true, cartItemResponseModel.getStatus());
 		
 	}
 	

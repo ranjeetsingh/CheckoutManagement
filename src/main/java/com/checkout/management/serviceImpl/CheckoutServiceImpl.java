@@ -306,8 +306,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @return InventoryResponse
 	 */
 	
-	@SuppressWarnings("unused")
-	private InventoryResponse getInventoryStatusFallback(String productId) {
+	public InventoryResponse getInventoryStatusFallback(String productId) {
 		System.out.println("Inventory Service is down!!! fallback route enabled...");
 		InventoryResponse inventoryResponse = new InventoryResponse();
 		inventoryResponse.setMessage(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
@@ -320,8 +319,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @return CartItemResponse
 	 */
 	
-	@SuppressWarnings("unused")
-	private CartItemResponse getCartItemFallback(String userId) {
+	public CartItemResponse getCartItemFallback(String userId) {
 		CartItemResponse cartItem = new CartItemResponse();
 		cartItem.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
 		return cartItem;
@@ -332,8 +330,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @param userId
 	 * @return UserDetailsResponse
 	 */
-	@SuppressWarnings("unused")
-	private UserDetailsResponse getUserAddressFallback(String userId) {
+	public UserDetailsResponse getUserAddressFallback(String userId) {
 		System.out.println("User Service is down!!! fallback route enabled...");
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
 		userDetailsResponse.setMessage(AppConstant.USER_SERVICE_DOWN_MESSAGE);
@@ -345,8 +342,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @param userId
 	 * @return UserDetailsResponse
 	 */
-	@SuppressWarnings("unused")
-	private CommonResponseModel updateInventoryFallback(String userId) {
+	public CommonResponseModel updateInventoryFallback(String userId) {
 		System.out.println("Inventory Service is down!!! fallback route enabled...");
 		CommonResponseModel updateInventory = new CommonResponseModel();
 		updateInventory.setMessage(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
@@ -358,8 +354,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @param userId
 	 * @return UserDetailsResponse
 	 */
-	@SuppressWarnings("unused")
-	private CommonResponseModel removeCartItemFallback(String userId) {
+	public CommonResponseModel removeCartItemFallback(String userId) {
 		System.out.println("Cart Service is down!!! fallback route enabled...");
 		CommonResponseModel userDetailsResponse = new CommonResponseModel();
 		userDetailsResponse.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
@@ -371,8 +366,7 @@ public class CheckoutServiceImpl implements ICheckoutService {
 	 * @param userId
 	 * @return UserDetailsResponse
 	 */
-	@SuppressWarnings("unused")
-	private CreateOrderResponse creatOrderFallback(String userId) {
+	public CreateOrderResponse creatOrderFallback(String userId) {
 		System.out.println("Order Service is down!!! fallback route enabled...");
 		CreateOrderResponse orderResp = new CreateOrderResponse();
 		orderResp.setMessage(AppConstant.ORDER_SERVICE_DOWN_MESSAGE);

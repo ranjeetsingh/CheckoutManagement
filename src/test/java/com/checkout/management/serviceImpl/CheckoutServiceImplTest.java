@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -284,6 +285,53 @@ class CheckoutServiceImplTest extends JUnitObjectPaymentServiceImpl {
 
 	}
 	
+	@Test
+	public void testGetInventoryStatusFallback() {
+		InventoryResponse inventoryResponse =new InventoryResponse();
+		inventoryResponse.setMessage(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.getInventoryStatusFallback("1")).thenReturn(inventoryResponse);
+		Assert.assertEquals(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE, inventoryResponse.getMessage());
+	}
+	
+	@Test
+	public void testGetCartItemFallback() {
+		CartItemResponse cartItem = new CartItemResponse();
+		cartItem.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.getCartItemFallback(Mockito.anyString())).thenReturn(cartItem);
+		Assert.assertEquals(AppConstant.CART_SERVICE_DOWN_MESSAGE, cartItem.getMessage());
+	}
+	
+	@Test
+	public void testGetUserAddressFallback() {
+		UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+		userDetailsResponse.setMessage(AppConstant.USER_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.getUserAddressFallback(Mockito.anyString())).thenReturn(userDetailsResponse);
+		Assert.assertEquals(AppConstant.USER_SERVICE_DOWN_MESSAGE, userDetailsResponse.getMessage());
+	}
+	
+	@Test
+	public void testGetUpdateInventoryFallback() {
+		CommonResponseModel updateInventory = new CommonResponseModel();
+		updateInventory.setMessage(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.updateInventoryFallback("1")).thenReturn(updateInventory);
+		Assert.assertEquals(AppConstant.INVENTORY_SERVICE_DOWN_MESSAGE, updateInventory.getMessage());
+	}
+	
+	@Test
+	public void testRemoveCartItemFallback() {
+		CommonResponseModel userDetailsResponse = new CommonResponseModel();
+		userDetailsResponse.setMessage(AppConstant.CART_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.removeCartItemFallback(Mockito.anyString())).thenReturn(userDetailsResponse);
+		Assert.assertEquals(AppConstant.CART_SERVICE_DOWN_MESSAGE, userDetailsResponse.getMessage());
+	}
+	
+	@Test
+	public void testCreatOrderFallback() {
+		CreateOrderResponse orderResp = new CreateOrderResponse();
+		orderResp.setMessage(AppConstant.ORDER_SERVICE_DOWN_MESSAGE);
+		when(mockCheckoutServiceImpl.creatOrderFallback("1")).thenReturn(orderResp);
+		Assert.assertEquals(AppConstant.ORDER_SERVICE_DOWN_MESSAGE, orderResp.getMessage());
+	}
 	
 
 }
